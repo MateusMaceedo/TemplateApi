@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TemplateApi.CrossCutting;
 using TemplateApi.Infrastructure.Extensions;
+using TemplateApi.Middleware;
 
 namespace TemplateApi
 {
@@ -39,6 +40,8 @@ namespace TemplateApi
                 c.RoutePrefix = "swagger";
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Demo Api");
             });
+
+            app.UseErrorHandler();
 
             app.UseHttpsRedirection();
 
