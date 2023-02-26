@@ -3,11 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Net.Http;
-using TemplateApi.Application.Interfaces;
-using TemplateApi.Application.UseCases;
-using TemplateApi.Domain.Interfaces;
-using TemplateApi.Infrastructure.Repositories.Cache;
+using TemplateApi.CrossCutting;
+using TemplateApi.Infrastructure.Extensions;
 
 namespace TemplateApi
 {
@@ -23,24 +20,10 @@ namespace TemplateApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo 
-                { 
-                    Title = "TodoAPI", 
-                    Version = "v1" 
-                });
-            });
-
-            services.AddStackExchangeRedisCache(options =>            
-            {
-                options.Configuration = Configuration.GetConnectionString("ConnectionStrings:Redis");
-            });
-
-            services.AddScoped<IRedisRepository<object>, RedisRepository<object>>();
+            services.AddSwaggerGen();
+            services.InitRedis(Configuration);
             services.AddAutoMapper(typeof(Startup));
-            services.AddScoped<HttpClient>();
-            services.AddScoped<IRealizarConsultaPorCepUseCase, RealizarConsultaPorCepUseCase>();
+            services.InitContainer();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

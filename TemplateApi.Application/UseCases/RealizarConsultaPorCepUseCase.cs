@@ -22,7 +22,7 @@ namespace TemplateApi.Application.UseCases
             IConfiguration configuration, 
             IRedisRepository<object> redisRepository)
         {
-            var viaCepUrl = configuration.GetConnectionString("ConnectionStrings:APIViaCEP");
+            var viaCepUrl = configuration.GetSection("ConnectionStrings:APIViaCEP").Value;
             httpClient.BaseAddress = new Uri(viaCepUrl);
             _viaCepApi = RestService.For<IViaCepAPI>(httpClient);
             _redisRepository = redisRepository;
@@ -35,12 +35,6 @@ namespace TemplateApi.Application.UseCases
                 var cacheKey = $"Endereco:{cep}";
 
                 var enderecoJson = _redisRepository.Get(cacheKey);
-
-                if (!string.IsNullOrEmpty(enderecoJson.ToString()))
-                {
-                    var cepModel = JsonConvert.DeserializeObject<EnderecoEntity>(enderecoJson.ToString());
-                    return (cepModel);
-                }
 
                 var endereco = await _viaCepApi.GetEnderecoAsync(cep);
 

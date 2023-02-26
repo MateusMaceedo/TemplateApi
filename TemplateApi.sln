@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.33328.57
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateApi", "TemplateApi\TemplateApi.csproj", "{2D217872-67C6-4B14-8ECC-B67A8271EDC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateApi.Infrastructure", "TemplateApi.Infrastructure\TemplateApi.Infrastructure.csproj", "{45E88EFE-A257-48F1-A6F5-9569FC1B9D87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateApi.Infrastructure", "TemplateApi.Infrastructure\TemplateApi.Infrastructure.csproj", "{45E88EFE-A257-48F1-A6F5-9569FC1B9D87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateApi.Domain", "TemplateApi.Domain\TemplateApi.Domain.csproj", "{51AC288B-5CAE-449E-BF9E-9C492951B159}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateApi.Domain", "TemplateApi.Domain\TemplateApi.Domain.csproj", "{51AC288B-5CAE-449E-BF9E-9C492951B159}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateApi.Application", "TemplateApi.Application\TemplateApi.Application.csproj", "{A9DBF986-5C39-4170-A6EE-FF28624955D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateApi.Application", "TemplateApi.Application\TemplateApi.Application.csproj", "{A9DBF986-5C39-4170-A6EE-FF28624955D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateApi.CrossCutting", "TemplateApi.CrossCutting\TemplateApi.CrossCutting.csproj", "{884A4746-5255-4388-88A0-06B9C3161A0B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A9DBF986-5C39-4170-A6EE-FF28624955D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9DBF986-5C39-4170-A6EE-FF28624955D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9DBF986-5C39-4170-A6EE-FF28624955D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{884A4746-5255-4388-88A0-06B9C3161A0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{884A4746-5255-4388-88A0-06B9C3161A0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{884A4746-5255-4388-88A0-06B9C3161A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{884A4746-5255-4388-88A0-06B9C3161A0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
