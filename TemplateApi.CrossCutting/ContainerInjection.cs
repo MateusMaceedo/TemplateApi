@@ -3,6 +3,9 @@ using System.Net.Http;
 using TemplateApi.Application.Interfaces;
 using TemplateApi.Application.UseCases;
 using TemplateApi.Domain.Interfaces;
+using TemplateApi.Domain.Interfaces.Repository;
+using TemplateApi.Infrastructure.Repositories;
+using TemplateApi.Infrastructure.Repositories.Abstractions;
 using TemplateApi.Infrastructure.Repositories.Cache;
 
 namespace TemplateApi.CrossCutting
@@ -19,6 +22,10 @@ namespace TemplateApi.CrossCutting
             
             // Repository
             services.AddScoped<IRedisRepository<object>, RedisRepository<object>>();
+            services.AddScoped<IConsultaCepRepository, ConsultaCepRepository>();
+
+            // Data
+            services.AddScoped<IRepository<object>, Repository<object>>();
         }
     }
 }

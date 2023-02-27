@@ -43,7 +43,7 @@ namespace TemplateApi.Infrastructure.Repositories.Cache
 
             if (value == null)
             {
-                return default(T);
+                return default;
             }
 
             return JsonConvert.DeserializeObject<T>(value);
