@@ -9,7 +9,6 @@ using TemplateApi.Application.Mappers;
 using TemplateApi.Application.UseCases.Externals;
 using TemplateApi.Domain.Entities;
 using TemplateApi.Domain.Interfaces;
-using TemplateApi.Domain.Interfaces.Repository;
 
 namespace TemplateApi.Application.UseCases
 {
@@ -17,19 +16,16 @@ namespace TemplateApi.Application.UseCases
     {
         private readonly IViaCepAPI _viaCepApi;
         private readonly IRedisRepository<object> _redisRepository;
-        private readonly IRepository<object> _repository;
 
         public RealizarConsultaPorCepUseCase(
             HttpClient httpClient,
             IConfiguration configuration,
-            IRedisRepository<object> redisRepository, 
-            IRepository<object> repository)
+            IRedisRepository<object> redisRepository)
         {
             var viaCepUrl = configuration.GetSection("ConnectionStrings:APIViaCEP").Value;
             httpClient.BaseAddress = new Uri(viaCepUrl);
             _viaCepApi = RestService.For<IViaCepAPI>(httpClient);
             _redisRepository = redisRepository;
-            _repository = repository;
         }
 
         public async Task<EnderecoEntity> ObterEnderecoPorCep(string cep)
@@ -38,13 +34,11 @@ namespace TemplateApi.Application.UseCases
             {
                 var cacheKey = $"Endereco:{cep}";
 
-                var enderecoJson = _redisRepository.Get(cacheKey);
-
-                var cepModel = _repository.GetAll();
+                var enderecoJson = await _redisRepository.GetAsync(cacheKey);
 
                 var endereco = await _viaCepApi.GetEnderecoAsync(cep);
 
-                if (endereco == null)
+                if (endereco is null)
                 {
                     return null;
                 }
@@ -52,10 +46,9 @@ namespace TemplateApi.Application.UseCases
                 var enderecoDto = EntityToModelProfile.Map(endereco);
                 enderecoJson = JsonConvert.SerializeObject(enderecoDto);
 
-                _redisRepository.Add(cacheKey, enderecoJson);
+                await _redisRepository.Add(cacheKey, enderecoJson);
 
                 var enderecoCep = await _viaCepApi.GetEnderecoAsync(cep);
-                _repository.Insert(enderecoJson);
 
                 return endereco;
             }

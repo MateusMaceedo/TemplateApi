@@ -19,11 +19,13 @@ namespace TemplateApi.Infrastructure.Repositories.Cache
             _cache = cache;
         }
 
-        public void Add(string key, T value, TimeSpan? expiry = null)
+        public Task Add(string key, T value, TimeSpan? expiry = null)
         {
             string json = JsonConvert.SerializeObject(value);
             _database.StringSet(key, json, expiry);
+            return Task.CompletedTask;
         }
+
 
         public T Get(string key)
         {
@@ -39,14 +41,14 @@ namespace TemplateApi.Infrastructure.Repositories.Cache
 
         public async Task<T> GetAsync(string key)
         {
-            var value = await _cache.GetStringAsync(key);
-
-            if (value == null)
+            RedisValue value = _database.StringGet(key);
+            if (!value.HasValue)
             {
                 return default;
             }
 
-            return JsonConvert.DeserializeObject<T>(value);
+            string json = value.ToString();
+            return JsonConvert.DeserializeObject<T>(json);
         }
 
         public void Remove(string key)
@@ -54,13 +56,17 @@ namespace TemplateApi.Infrastructure.Repositories.Cache
             _database.KeyDelete(key);
         }
 
-        public async Task SetAsync(string key, T value, TimeSpan? expiration = null)
+        public async Task SetAsync(string key, T value, TimeSpan? expiration)
         {
             var options = new DistributedCacheEntryOptions();
 
             if (expiration.HasValue)
             {
-                options.SetAbsoluteExpiration(expiration.Value);
+                options.SetSlidingExpiration(expiration.Value);
+            }
+            else
+            {
+                options.SetSlidingExpiration(TimeSpan.FromSeconds(5));
             }
 
             var json = JsonConvert.SerializeObject(value);
@@ -69,3 +75,4 @@ namespace TemplateApi.Infrastructure.Repositories.Cache
         }
     }
 }
+

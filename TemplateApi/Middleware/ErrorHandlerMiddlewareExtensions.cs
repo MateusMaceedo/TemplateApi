@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Net;
 using TemplateApi.Application.Rest;
 
@@ -19,18 +20,21 @@ namespace TemplateApi.Middleware
                     context.Response.ContentType = "application/json";
 
                     var error = context.Features.Get<IExceptionHandlerFeature>();
-
-                    if (error != null)
+                    var errorMessages = new List<ErrorMessage>();
+                    var exception = error.Error;
+                    while (exception != null)
                     {
                         var errorMessage = new ErrorMessage
                         {
                             StatusCode = context.Response.StatusCode,
-                            Message = "An unexpected error occurred.",
-                            Details = error.Error.Message
+                            Message = exception.Message,
+                            Details = exception.StackTrace
                         };
-
-                        await context.Response.WriteAsync(JsonConvert.SerializeObject(errorMessage));
+                        errorMessages.Add(errorMessage);
+                        exception = exception.InnerException;
                     }
+
+                    await context.Response.WriteAsync(JsonConvert.SerializeObject(errorMessages));
                 });
             });
         }

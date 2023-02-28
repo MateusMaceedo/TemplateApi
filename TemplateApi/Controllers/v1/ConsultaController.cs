@@ -20,6 +20,11 @@ namespace TemplateApi.Controllers
         {
             var result = await _realizarConsultaPorCepUseCase.ObterEnderecoPorCep(cep);
 
+            if (cep is null || !string.IsNullOrEmpty(cep))
+            {
+                return BadRequest();
+            }
+
             return Ok(result);
         }
     }

@@ -8,7 +8,7 @@ namespace TemplateApi.Domain.Interfaces
         Task<T> GetAsync(string key);
         Task SetAsync(string key, T value, TimeSpan? expiration = null);
         T Get(string key);
-        void Add(string key, T value, TimeSpan? expiry = null);
+        Task Add(string key, T value, TimeSpan? expiry = null);
         void Remove(string key);
     }
 }
