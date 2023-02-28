@@ -34,7 +34,7 @@ namespace TemplateApi.TestsUnit.Controllers
 
             var result = new OkObjectResult(actionResult)
             {
-                 StatusCode = 200
+                StatusCode = 200
             };
 
             // Assert
@@ -61,7 +61,7 @@ namespace TemplateApi.TestsUnit.Controllers
             // Assert
             Assert.IsNotNull(actionResult);
 
-            Assert.IsInstanceOfType(actionResult, typeof(BadRequestResult));
+            Assert.IsInstanceOfType(actionResult, typeof(NotFoundResult));
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using TemplateApi.Application.Interfaces;
+using TemplateApi.Domain.Utils;
 
 namespace TemplateApi.Controllers
 {
@@ -18,12 +19,13 @@ namespace TemplateApi.Controllers
         [HttpGet("{cep}")]
         public async Task<ActionResult> GetEnderecoAsync(string cep)
         {
-            var result = await _realizarConsultaPorCepUseCase.ObterEnderecoPorCep(cep);
-
-            if (cep is null || !string.IsNullOrEmpty(cep))
+            // Verifica se o CEP é válido
+            if (!CepUtils.IsValidCep(cep))
             {
-                return BadRequest();
+                return NotFound();
             }
+
+            var result = await _realizarConsultaPorCepUseCase.ObterEnderecoPorCep(cep);
 
             return Ok(result);
         }
